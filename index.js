@@ -47,7 +47,10 @@ vorpal
   .alias('/msg')
   .action(function (args, cb) {
     let dev = d.deviceByName[args.name]
-    action.sendMessage(dev.deviceID, args.message.join(' '))
+    let folder = d.chatFolderForDevice[dev.deviceID]
+    let content = args.message.join(' ')
+    action.sendMessage(folder.id, content)
+    .then(() => this.log(`${helpers.stamp()} ${chalk.green('you')} have sent to ${chalk.yellow(dev.name)}: ${chalk.dim(content)}`))
     .then(cb)
   })
 
